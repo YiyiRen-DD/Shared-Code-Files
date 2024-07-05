@@ -117,12 +117,7 @@ class TransactionSegmentRepositoryTest(
         stmt = transaction_segments.table.select().where(
             transaction_segments.id == transaction_segment_id
         )
-        row = await self._bankdb_crdb.primary_or_replica(
-            use_real_replica=use_real_replica_for_bankdb_repo_method(
-                repo_name="transaction_segment",
-                method_name="get_transaction_segment_by_id",
-            )
-        ).fetch_one(stmt)
+        row = await self._bankdb_crdb.primary().fetch_one(stmt)
         return TransactionSegment.from_row(row) if row else None
 
     async def get_transaction_segments_by_payment_account_id_and_transfer_id(
